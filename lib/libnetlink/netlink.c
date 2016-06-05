@@ -416,7 +416,7 @@ int netl_listen(struct netl_handle *h, void *args)
         }
 
         if (msg.msg_namelen != sizeof(nladdr)) {
-          // Invalid length
+          h->cb.log("Wrong address length", ERR);
           return -1;
         }
 
@@ -425,8 +425,12 @@ int netl_listen(struct netl_handle *h, void *args)
           len = hdr->nlmsg_len;
           buflen = len - sizeof(*hdr);
 
-          if (buflen < 0 || buflen > status) {
-            // truncated
+          if (buflen < 0 || len > status) {
+            if (msg.msg_flags & MSG_TRUNC) {
+              h->cb.log("Truncated message", ERR);
+              return -1;
+            }
+            h->cb.log("Malformatted message", ERR);
             return -1;
           }
 

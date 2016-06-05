@@ -814,12 +814,12 @@ add_invalid_neighbor6(neighbor_struct_t* neighbor_struct,
 }
 
 static void
-netl_log(const char *msg, uint32_t lvl)
+netl_log(const char* msg, uint32_t lvl)
 {
 	rte_log(lvl, RTE_LOGTYPE_PKTJ_CTRL1, "PKTJ_CRTL1: %s\n", msg);
 }
 
-void *
+void*
 control_init(int32_t socket_id, unsigned events)
 {
 	struct netl_handle* netl_h;
